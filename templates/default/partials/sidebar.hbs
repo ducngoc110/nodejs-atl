@@ -7,7 +7,7 @@
     </div>
     <div class="menu_section">
         <ul>
-            <li class="current_section" title="Dashboard">
+            <li {{#compare actionTab 'home' operator="==" }}class="current_section"{{/compare}} title="Dashboard">
                 <a href="/">
                     <span class="menu_icon"><i class="material-icons">&#xE871;</i></span>
                     <span class="menu_title">Dashboard</span>
@@ -19,8 +19,8 @@
                     <span class="menu_title">User</span>
                 </a>
                 <ul>
-                    <li><a href="/user-manager">User Management</a></li>
-                    <li><a href="/user-add">User Add</a></li>
+                    <li {{#compare actionTab 'user-manage' operator="==" }}class="act_item"{{/compare}}><a href="/user-manage">User Management</a></li>
+                    <li {{#compare actionTab 'user-add' operator="==" }}class="act_item"{{/compare}}><a href="/user-add">User Add</a></li>
                 </ul>
             </li>
         </ul>

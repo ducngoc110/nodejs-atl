@@ -14,6 +14,7 @@ var validator    = require('express-validator');
 
 var settings = require('./config/settings');
 var database = require('./config/database');
+var helpers = require('./helpers/handlebars');
 
 var indexRouter  = require('./routes/index');
 var usersRouter  = require('./routes/users');
@@ -24,10 +25,13 @@ mongoose.connect(database.dbStr, { useNewUrlParser: true });
 
 // view engine setup
 var hbsConfig = expHbs.create({
-    layoutsDir : path.join(__dirname, 'templates/' + settings.defaultTemplate + '/layouts'),
-    defaultLayout : path.join(__dirname, 'templates/' + settings.defaultTemplate + '/layouts/layout'),
-    partialsDir : path.join(__dirname, 'templates/' + settings.defaultTemplate + '/partials'),
-    extname : ".hbs"
+    layoutsDir   : path.join(__dirname, 'templates/' + settings.defaultTemplate + '/layouts'),
+    defaultLayout: path.join(__dirname, 'templates/' + settings.defaultTemplate + '/layouts/layout'),
+    partialsDir  : path.join(__dirname, 'templates/' + settings.defaultTemplate + '/partials'),
+    extname      : ".hbs",
+    helpers : {
+        compare: helpers.compare
+    }
 });
 app.engine('.hbs', hbsConfig.engine);
 app.set('view engine', '.hbs');
@@ -42,8 +46,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({
-    secret: settings.secretKey,
-    resave: false,
+    secret           : settings.secretKey,
+    resave           : false,
     saveUninitialized: false
 }));
 app.use(flash());
@@ -65,7 +69,7 @@ app.use(function(req, res, next) {
 app.use(function(err, req, res, next) {
     // set locals, only providing error in development
     res.locals.message = err.message;
-    res.locals.error = req.app.get('env') === 'development' ? err : {};
+    res.locals.error   = req.app.get('env') === 'development' ? err : {};
 
     // render the error page
     res.status(err.status || 500);
