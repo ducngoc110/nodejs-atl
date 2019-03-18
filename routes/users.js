@@ -14,5 +14,6 @@ router.post('/user-add', user_controller.post_add);
 
 /* GET users manage. */
 router.get('/user-manage', user_controller.get_manage);
+router.get('/user-manage-filter', user_controller.get_manage_filter);
 
 module.exports = router;

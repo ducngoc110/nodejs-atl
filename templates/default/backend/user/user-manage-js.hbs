@@ -1,0 +1,36 @@
+{{# each users }}
+    <tr>
+        <td class="uk-text-center">
+            <input type="checkbox" class="atl-checkbox-child-js" />
+        </td>
+        <td class="uk-text-center">
+            <img class="md-user-image" style="height: 34px;" src="">
+        </td>
+        <td>
+            {{ email }}
+        </td>
+        <td>
+            {{#each ../settings.listOffices}}
+            {{#compare @key ../meta.office operator="===" }}{{../this}}{{/compare}}
+            {{/each }}
+        </td>
+        <td class="uk-text-center">
+            <span class="uk-badge">{{ status }}</span>
+        </td>
+        <td class="uk-text-center">
+            <span class="uk-badge">
+            {{#each ../settings.listRoles}}
+            {{#compare @key ../roles operator="===" }}{{../this}}{{/compare}}
+            {{/each }}
+            </span>
+        </td>
+        <td class="uk-text-center">
+            <a href="/user-edit/{{ _id }}">
+                <i class="md-icon material-icons">edit</i>
+            </a>
+            <a href="#" class="atl-manage-user-delete-js">
+                <i class="md-icon material-icons">delete</i>
+            </a>
+        </td>
+    </tr>
+{{/each }}

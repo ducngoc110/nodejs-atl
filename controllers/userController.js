@@ -22,6 +22,7 @@ exports.get_edit = (req, res, next) => {
 				return res.redirect('/user-manage');
 			} else {
 				if (user) {
+					return res.send(user);
 					res.render('backend/user/user-add', {
 						pageTitle : 'Edit user',
 						errors,
@@ -129,3 +130,23 @@ exports.get_manage = (req, res, next) => {
 		});
 	});
 }
+
+exports.get_manage_filter = (req, res, next) => {
+	let role = req.query.role;
+	let data = {};
+	if (role) {
+		data = { roles : role }
+	}
+	User.find(data, (err, users) => {
+		if (users) {
+			res.render('backend/user/user-manage-js',
+				{ layout: false, users },
+				(err, html) => {
+					res.json(html);
+			});
+			
+		}
+	});
+
+}
+

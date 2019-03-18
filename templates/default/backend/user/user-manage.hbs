@@ -5,12 +5,12 @@
             <div class="uk-width-medium-2-3">
                 <div class="uk-vertical-align">
                     <div class="uk-vertical-align-middle">
-                        <ul class="uk-subnav uk-subnav-pill atl-manage-user-filter-js">
+                        <ul class="uk-subnav uk-subnav-pill atl-manage-user-filter">
                             <li class="uk-active">
                                 <a href="">All</a>
                             </li>
                             {{#each settings.listRoles}}
-                            <li><a href="">{{ this }}</a></li>
+                            <li data-role="{{@key}}"><a href="">{{ this }}</a></li>
                             {{/each }}
                             
                         </ul>
@@ -119,3 +119,4 @@
         </a>
     </div>
 </div>
+<script src="/assets/backend/js/atl-backend-user.js"></script>
