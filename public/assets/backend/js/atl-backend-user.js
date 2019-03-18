@@ -6,6 +6,7 @@ $(document).ready(function(){
         init () {
             this.handleNotify();
             this.manageFitlerRole();
+            this.manageSearch();
         },
 
         handleNotify () {
@@ -34,6 +35,23 @@ $(document).ready(function(){
                     $('.atl-list-user-not-js').remove();
                     item.closest('.atl-manage-user-filter').find('li').removeClass('uk-active');
                     item.addClass('uk-active');
+                });
+                return false;
+            });
+        },
+
+        manageSearch () {
+            $('.atl-user-manage-search').keyup((e) => {
+                let item = $(e.currentTarget);
+                let input = item.val();
+                console.log(input);
+                let data = {
+                    input
+                };
+                // Send to server handle.
+                $.get('/user-manage-filter', data).then((html) => {
+                    $('.atl-list-user-js').html(html);
+                    $('.atl-list-user-not-js').remove();
                 });
                 return false;
             });

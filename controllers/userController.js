@@ -19,10 +19,9 @@ exports.get_edit = (req, res, next) => {
 			'_id' : id
 		}, (err, user) => {
 			if (err) {
-				return res.redirect('/user-manage');
+				res.redirect('/user-manage');
 			} else {
 				if (user) {
-					return res.send(user);
 					res.render('backend/user/user-add', {
 						pageTitle : 'Edit user',
 						errors,
@@ -52,9 +51,10 @@ exports.post_add = (req, res, next) => {
 		});
 		req.flash('error', messages);
 		if (!id) {
-			return res.redirect('/user-add');
+			return res.json(messages);
+			res.redirect('/user-add');
 		} else {
-			return res.redirect('/user-edit/'+ id);
+			res.redirect('/user-edit/'+ id);
 		}
 	} else {
 		if (!id) {
@@ -63,11 +63,11 @@ exports.post_add = (req, res, next) => {
 			}, (err, user) => {
 				if (err) {
 					req.flash('error', '404 Error, please again');
-					return res.redirect('/user-add');
+					res.redirect('/user-add');
 				}
 				if (user) {
 					req.flash('error', 'Email address used, please enter another');
-					return res.redirect('/user-add');
+					res.redirect('/user-add');
 				} else {
 					var newUser = new User();
 					newUser.email    = req.body.email;
@@ -85,10 +85,10 @@ exports.post_add = (req, res, next) => {
 					newUser.save((err, result) => {
 						if (err) {
 							req.flash('error', '404 Error, please again');
-							return res.redirect('/user-add');
+							res.redirect('/user-add');
 						} else {
 							req.flash('success', 'Created user successfully!');
-							return res.redirect('/user-edit/' + result._id);
+							res.redirect('/user-edit/' + result._id);
 						}
 					});
 				}
@@ -115,7 +115,7 @@ exports.post_add = (req, res, next) => {
 				}
 				user.save();
 				req.flash('success', 'Updated user successfully!');
-				return res.redirect('/user-edit/' + id);
+				res.redirect('/user-edit/' + id);
 			});
 		}
 	}
@@ -133,9 +133,13 @@ exports.get_manage = (req, res, next) => {
 
 exports.get_manage_filter = (req, res, next) => {
 	let role = req.query.role;
+	let input = req.query.input;
 	let data = {};
 	if (role) {
 		data = { roles : role }
+	} else if (input) {
+		input = new RegExp(input, "i");
+		data = { email : input }
 	}
 	User.find(data, (err, users) => {
 		if (users) {
