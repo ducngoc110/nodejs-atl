@@ -5,16 +5,13 @@ var mongoose     = require('mongoose')
 var path         = require('path');
 var cookieParser = require('cookie-parser');
 var logger       = require('morgan');
-
 var session      = require('express-session');
 var flash        = require('connect-flash');
 var validator    = require('express-validator');
 
-
-
 var settings = require('./config/settings');
 var database = require('./config/database');
-var helpers = require('./helpers/handlebars');
+var helpers  = require('./helpers/handlebars');
 
 var indexRouter  = require('./routes/index');
 var usersRouter  = require('./routes/users');

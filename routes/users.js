@@ -1,19 +1,34 @@
 var express = require('express');
+var multer  = require("multer");
+var mkdirp  = require('mkdirp');
+
 var router  = express.Router();
 
 var user_controller = require('../controllers/userController');
+let pathUser = 'public/uploads/user';
 
-/* GET users add. */
+var storage = multer.diskStorage({
+	destination: function (req, file, cb) {
+		mkdirp(pathUser, function (err) {
+			if (!err) {
+				cb(null, pathUser)
+			}
+		});
+	},
+	filename: function (req, file, cb) {
+		cb(null, 'ATL-' + Date.now() + '-' + file.originalname );
+	}
+});
+var upload = multer({ storage: storage });
+
+/* GET users. */
 router.get('/user-add', user_controller.get_add);
-/* GET users edit. */
 router.get('/user-edit/:id', user_controller.get_edit);
-
-/* POST users add. */
-router.post('/user-add', user_controller.post_add);
-
-
-/* GET users manage. */
 router.get('/user-manage', user_controller.get_manage);
-router.get('/user-manage-filter', user_controller.get_manage_filter);
+
+/* POST users action. */
+router.post('/user-add', upload.single('avatar'), user_controller.post_add);
+router.post('/user-manage-filter', user_controller.post_manage_filter);
+router.post('/user-manage-remove', user_controller.post_manage_remove);
 
 module.exports = router;

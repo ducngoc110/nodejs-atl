@@ -15,20 +15,23 @@
             {{/each }}
         </td>
         <td class="uk-text-center">
-            <span class="uk-badge">{{ status }}</span>
+            {{#compare status 'on' operator="==="}}
+            <span class="uk-badge">Active</span>
+            {{/compare}}
+            {{#compare status 'off' operator="==="}}
+            <span class="uk-badge uk-badge-danger">Deactive</span>
+            {{/compare}}
         </td>
         <td class="uk-text-center">
-            <span class="uk-badge">
             {{#each ../settings.listRoles}}
-            {{#compare @key ../roles operator="===" }}{{../this}}{{/compare}}
+            {{#compare @key ../roles operator="===" }}<span class="uk-badge {{#compare @key 'admin' operator="==="}}uk-badge-danger{{/compare}}">{{../this}}</span>{{/compare}}
             {{/each }}
-            </span>
         </td>
         <td class="uk-text-center">
             <a href="/user-edit/{{ _id }}">
                 <i class="md-icon material-icons">edit</i>
             </a>
-            <a href="#" class="atl-manage-user-delete-js">
+            <a href="#" class="atl-manage-user-delete" data-id="{{ _id }}">
                 <i class="md-icon material-icons">delete</i>
             </a>
         </td>

@@ -51,7 +51,6 @@ exports.post_add = (req, res, next) => {
 		});
 		req.flash('error', messages);
 		if (!id) {
-			return res.json(messages);
 			res.redirect('/user-add');
 		} else {
 			res.redirect('/user-edit/'+ id);
@@ -72,9 +71,10 @@ exports.post_add = (req, res, next) => {
 					var newUser = new User();
 					newUser.email    = req.body.email;
 					newUser.password = newUser.encryptPassword(req.body.password);
-					newUser.status   = req.body.status;
+					newUser.status   = (req.body.status) ? req.body.status : 'off';
 					newUser.roles    = req.body.roles;
 					newUser.meta.name     = req.body.name;
+					newUser.meta.avatar   = req.file.filename;
 					newUser.meta.birthday = req.body.birthday;
 					newUser.meta.more     = req.body.more;
 					newUser.meta.office   = req.body.office;
@@ -100,9 +100,10 @@ exports.post_add = (req, res, next) => {
 					return res.redirect('/user-edit/'+ id);
 				}
 				user.email    = req.body.email;
-				user.status   = req.body.status;
+				user.status   = (req.body.status) ? req.body.status : 'off';
 				user.roles    = req.body.roles;
 				user.meta.name     = req.body.name;
+				user.meta.avatar   = req.file.filename;
 				user.meta.birthday = req.body.birthday;
 				user.meta.more     = req.body.more;
 				user.meta.office   = req.body.office;
@@ -113,6 +114,7 @@ exports.post_add = (req, res, next) => {
 				if (req.body.password !== user.password) {
 					user.password = user.encryptPassword(req.body.password);
 				}
+				console.log(user);
 				user.save();
 				req.flash('success', 'Updated user successfully!');
 				res.redirect('/user-edit/' + id);
@@ -131,9 +133,9 @@ exports.get_manage = (req, res, next) => {
 	});
 }
 
-exports.get_manage_filter = (req, res, next) => {
-	let role = req.query.role;
-	let input = req.query.input;
+exports.post_manage_filter = (req, res, next) => {
+	let role = req.body.role;
+	let input = req.body.input;
 	let data = {};
 	if (role) {
 		data = { roles : role }
@@ -148,9 +150,16 @@ exports.get_manage_filter = (req, res, next) => {
 				(err, html) => {
 					res.json(html);
 			});
-			
 		}
 	});
-
 }
 
+exports.post_manage_remove = (req, res, next) => {
+	let status = true,
+	id = req.body.id;
+	User.findByIdAndRemove(id, (err) => {
+		if (err) { status = false; }
+		let data = { status };
+		res.json(data);
+	});
+}

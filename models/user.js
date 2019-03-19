@@ -10,6 +10,7 @@ var userSchema = new Schema({
 	roles : String,
 	meta : {
 		name : String,
+		avatar : String,
 		birthday : String,
 		more : String,
 		office : String,
