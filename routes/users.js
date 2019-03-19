@@ -8,16 +8,14 @@ var user_controller = require('../controllers/userController');
 let pathUser = 'public/uploads/user';
 
 var storage = multer.diskStorage({
-	destination: function (req, file, cb) {
-		mkdirp(pathUser, function (err) {
+	destination: (req, file, cb) => {
+		mkdirp(pathUser, (err) => {
 			if (!err) {
 				cb(null, pathUser)
 			}
 		});
 	},
-	filename: function (req, file, cb) {
-		cb(null, 'ATL-' + Date.now() + '-' + file.originalname );
-	}
+	filename: (req, file, cb) => cb(null, 'ATL-' + Date.now() + '-' + file.originalname )
 });
 var upload = multer({ storage: storage });
 

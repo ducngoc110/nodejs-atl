@@ -4,7 +4,7 @@
             <input type="checkbox" class="atl-checkbox-child-js" />
         </td>
         <td class="uk-text-center">
-            <img class="md-user-image" style="height: 34px;" src="">
+            <img class="md-user-image" style="height: 34px;" src="{{#if meta.avatar}}/uploads/user/{{meta.avatar}}{{else}}/assets/backend/img/blank.png{{/if}}">
         </td>
         <td>
             {{ email }}

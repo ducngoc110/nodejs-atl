@@ -18,8 +18,7 @@ var settings = {
 		'cambodia': 'Cambodia',
 		'myanmar' : 'Myanmar',
 		'thailand': 'Thailand',
-	},
-	defaultUpload: 'uploads'
+	}
 }
 
 module.exports = settings;

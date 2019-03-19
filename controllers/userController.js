@@ -74,7 +74,7 @@ exports.post_add = (req, res, next) => {
 					newUser.status   = (req.body.status) ? req.body.status : 'off';
 					newUser.roles    = req.body.roles;
 					newUser.meta.name     = req.body.name;
-					newUser.meta.avatar   = req.file.filename;
+					newUser.meta.avatar   = (req.file) ? req.file.filename : '';
 					newUser.meta.birthday = req.body.birthday;
 					newUser.meta.more     = req.body.more;
 					newUser.meta.office   = req.body.office;
@@ -103,7 +103,7 @@ exports.post_add = (req, res, next) => {
 				user.status   = (req.body.status) ? req.body.status : 'off';
 				user.roles    = req.body.roles;
 				user.meta.name     = req.body.name;
-				user.meta.avatar   = req.file.filename;
+				user.meta.avatar   = (req.file) ? req.file.filename : '';
 				user.meta.birthday = req.body.birthday;
 				user.meta.more     = req.body.more;
 				user.meta.office   = req.body.office;
@@ -147,9 +147,8 @@ exports.post_manage_filter = (req, res, next) => {
 		if (users) {
 			res.render('backend/user/user-manage-js',
 				{ layout: false, users },
-				(err, html) => {
-					res.json(html);
-			});
+				(err, html) => res.json(html)
+			);
 		}
 	});
 }
